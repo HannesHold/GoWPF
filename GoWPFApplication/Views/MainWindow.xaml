@@ -74,9 +74,9 @@
                         GridSnapEnabled="{Binding Path=GraphLinksModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapCellSize="10 10">
 
-                    <go:Diagram.ClickCreatingTool>
+                    <go:Diagram.RotatingTool>
                         <go:RotatingTool SnapAngleEpsilon="45" SnapAngleMultiple="45" />
-                    </go:Diagram.ClickCreatingTool>
+                    </go:Diagram.RotatingTool>
                     
                     <go:Diagram.GridPattern>
                         <go:GridPattern CellSize="10 10">
