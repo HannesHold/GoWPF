@@ -29,7 +29,9 @@
         <!--#region Left area-->
         <Grid Grid.Column="0">
             <go:Palette x:Name="NodeToolBox"
-                        HasDefaultModel="True"
+                        HasDefaultModel="True"						                        
+                        NodeTemplate="{StaticResource PaletteNodeTemplate}"
+                        LinkTemplate="{StaticResource PaletteLinkTemplate}"
                         Model="{Binding Path=NodeToolBoxModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         AllowDragOut="{Binding Path=NodeToolBoxModel.Settings.AllowDragOut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDrop="{Binding Path=NodeToolBoxModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
@@ -62,6 +64,8 @@
                         HasDefaultModel="True"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
+				        NodeTemplate="{StaticResource NodeTemplate}"
+                        LinkTemplate="{StaticResource LinkTemplate}"
                         Model="{Binding Path=GraphLinksModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDragOut="{Binding Path=GraphLinksModel.Settings.AllowDragOut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDrop="{Binding Path=GraphLinksModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -70,7 +74,10 @@
                         GridSnapEnabled="{Binding Path=GraphLinksModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapCellSize="10 10">
 
-
+                    <go:Diagram.ClickCreatingTool>
+                        <go:RotatingTool SnapAngleEpsilon="45" SnapAngleMultiple="45" />
+                    </go:Diagram.ClickCreatingTool>
+                    
                     <go:Diagram.GridPattern>
                         <go:GridPattern CellSize="10 10">
                             <Path Stroke="LightGray" StrokeThickness="1" go:GridPattern.Figure="HorizontalLine" />
@@ -114,6 +121,8 @@
         <Grid Grid.Column="4">
             <go:Palette x:Name="LinkToolBox"
                         HasDefaultModel="True"
+                        NodeTemplate="{StaticResource PaletteNodeTemplate}"
+                        LinkTemplate="{StaticResource PaletteLinkTemplate}"
                         Model="{Binding Path=LinkToolBoxModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         AllowDragOut="{Binding Path=LinkToolBoxModel.Settings.AllowDragOut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDrop="{Binding Path=LinkToolBoxModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">

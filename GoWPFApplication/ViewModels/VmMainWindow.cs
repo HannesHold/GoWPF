@@ -108,7 +108,7 @@ namespace GoWPFApplication.ViewModels
             {
                 var newNodedata = new MoNodeData()
                 {
-                    Text = $"Node template {i}"
+                    Text = $"NT {i}"
                 };
 
                 newNodedata.GenerateNodeVisual();
@@ -135,7 +135,7 @@ namespace GoWPFApplication.ViewModels
             {
                 var newNodedata = new MoNodeData()
                 {
-                    Text = $"Link template {i}"
+                    Text = $"LT {i}"
                 };
 
                 newNodedata.GenerateLinkVisual();
@@ -159,10 +159,10 @@ namespace GoWPFApplication.ViewModels
             GraphLinksModelNodesSource = new ObservableCollection<MoNodeData>();
             GraphLinksModelLinksSource = new ObservableCollection<MoLinkData>();
 
-            //Set model properties
-            graphLinksModel.HasUndoManager = true;
+            //Set model properties          
             graphLinksModel.NodesSource = GraphLinksModelNodesSource;
             graphLinksModel.LinksSource = GraphLinksModelLinksSource;
+            graphLinksModel.HasUndoManager = true;
             graphLinksModel.Modifiable = true;
 
             //Assign model
