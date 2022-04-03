@@ -5,6 +5,18 @@
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
 
+        <!--#region Styles-->
+
+        <Style TargetType="{x:Type go:Node}">
+            <Setter Property="IsSelected" Value="{Binding Path=Data.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Style>
+
+        <Style TargetType="{x:Type go:Link}">
+            <Setter Property="IsSelected" Value="{Binding Path=Data.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Style>
+
+        <!--#endregion-->
+        
         <!--#region DataTemplates Nodes-->
 
         <DataTemplate x:Key="NodeSelectionAdornmentTemplate">
@@ -34,7 +46,7 @@
         <DataTemplate x:Key="NodeTemplate">
             <go:SpotPanel Cursor="Hand"
           go:Node.Location="{Binding Path=Data.Location, Mode=TwoWay}"
-          go:Node.LocationSpot="Center"
+
           go:Part.SelectionAdorned="True"
           go:Part.SelectionAdornmentTemplate="{StaticResource NodeSelectionAdornmentTemplate}"
           go:Part.Resizable="True"
@@ -53,7 +65,7 @@
                 MinWidth="10" MinHeight="10"
                 go:NodePanel.Spot1="0 0" go:NodePanel.Spot2="1 1"
                 go:Node.PortId="" go:Node.LinkableFrom="True" go:Node.LinkableTo="True" Cursor="Hand"
-                go:Node.LinkableDuplicates="True" go:Node.LinkableSelfNode="True" />
+                go:Node.LinkableDuplicates="True" go:Node.LinkableSelfNode="False" />
                     <Rectangle Fill="Transparent" Margin="12" 
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 

@@ -25,6 +25,14 @@ namespace GoWPFApplication.Models
             private set { _id = value; }
         }
 
+        private bool _isSelected = false;
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { if (_isSelected != value) { bool old = _isSelected; _isSelected = value; RaisePropertyChanged("IsSelected", old, value); } }
+        }
+
         #region Link visual
 
 

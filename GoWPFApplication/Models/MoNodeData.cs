@@ -28,6 +28,14 @@ namespace GoWPFApplication.Models
             private set { _id = value; }
         }
 
+        private bool _isSelected = false;
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { if (_isSelected != value) { bool old = _isSelected; _isSelected = value; RaisePropertyChanged("IsSelected", old, value); } }
+        }
+
         #region Node visual
 
         private NodeFigure _figure = NodeFigure.Rectangle;
@@ -102,6 +110,7 @@ namespace GoWPFApplication.Models
 
             return result is not null ? result.ToString() : Brushes.DeepPink.ToString();
         }
+
         public void GenerateNodeVisual()
         {
             BackColor = RandomBrushString();

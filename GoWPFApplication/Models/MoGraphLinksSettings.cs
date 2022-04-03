@@ -27,6 +27,14 @@ namespace GoWPFApplication.Models
 
         #region Settings
 
+        private bool _allowZoom;
+
+        public bool AllowZoom
+        {
+            get => _allowZoom;
+            set => SetProperty(ref _allowZoom, value);
+        }
+
         private bool _allowDragOut;
 
         public bool AllowDragOut
@@ -75,6 +83,7 @@ namespace GoWPFApplication.Models
             switch (SettingTarget)
             {
                 case GraphLinksSettingTargets.NodesToolBoxModel:
+                    AllowZoom = false;
                     AllowDragOut = true;
                     AllowDrop = false;
                     GridVisible = false;
@@ -82,6 +91,7 @@ namespace GoWPFApplication.Models
                     GridSnapEnabled = true;
                     break;
                 case GraphLinksSettingTargets.LinksToolBoxModel:
+                    AllowZoom = false;
                     AllowDragOut = true;
                     AllowDrop = false;
                     GridVisible = false;
@@ -89,6 +99,7 @@ namespace GoWPFApplication.Models
                     GridSnapEnabled = true;
                     break;
                 case GraphLinksSettingTargets.GraphLinksModel:
+                    AllowZoom = true;
                     AllowDragOut = false;
                     AllowDrop = true;
                     GridVisible = true;

@@ -2,8 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:go="http://schemas.nwoods.com/GoXam" 
+        xmlns:go="http://schemas.nwoods.com/GoXam"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:GoWPFApplication.Controls"
+        xmlns:enumerations="clr-namespace:GoWPFApplication.Enumerations"
+        xmlns:models="clr-namespace:GoWPFApplication.Models"
         xmlns:viewModels="clr-namespace:GoWPFApplication.ViewModels"
         mc:Ignorable="d"
         Title="GoWPF Application" Height="720 " Width="1280">
@@ -12,6 +15,50 @@
         <viewModels:VmMainWindow />
     </Window.DataContext>
 
+    <Window.InputBindings>
+        <KeyBinding Gesture="CTRL+1" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus1}" />
+        <KeyBinding Gesture="CTRL+2" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus2}" />
+        <KeyBinding Gesture="CTRL+3" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus3}" />
+        <KeyBinding Gesture="CTRL+4" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus4}" />
+        <KeyBinding Gesture="CTRL+5" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus5}" />
+        <KeyBinding Gesture="CTRL+6" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus6}" />
+        <KeyBinding Gesture="CTRL+7" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus7}" />
+        <KeyBinding Gesture="CTRL+8" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus8}" />
+        <KeyBinding Gesture="CTRL+9" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus9}" />
+        <KeyBinding Gesture="CTRL+0" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.CtrlPlus0}" />
+
+        <KeyBinding Gesture="ALT+1" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus1}" />
+        <KeyBinding Gesture="ALT+2" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus2}" />
+        <KeyBinding Gesture="ALT+3" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus3}" />
+        <KeyBinding Gesture="ALT+4" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus4}" />
+        <KeyBinding Gesture="ALT+5" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus5}" />
+        <KeyBinding Gesture="ALT+6" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus6}" />
+        <KeyBinding Gesture="ALT+7" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus7}" />
+        <KeyBinding Gesture="ALT+8" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus8}" />
+        <KeyBinding Gesture="ALT+9" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus9}" />
+        <KeyBinding Gesture="ALT+0" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{x:Static enumerations:InputGestures.AltPlus0}" />
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <!--Left area-->
@@ -33,8 +80,14 @@
                         NodeTemplate="{StaticResource PaletteNodeTemplate}"
                         LinkTemplate="{StaticResource PaletteLinkTemplate}"
                         Model="{Binding Path=NodeToolBoxModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        AllowZoom="{Binding Path=NodeToolBoxModel.Settings.AllowZoom, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDragOut="{Binding Path=NodeToolBoxModel.Settings.AllowDragOut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        AllowDrop="{Binding Path=NodeToolBoxModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        AllowDrop="{Binding Path=NodeToolBoxModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        GridVisible="{Binding Path=NodeToolBoxModel.Settings.GridVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        InitialScale="{Binding Path=NodeToolBoxModel.Settings.InitialScale, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        GridSnapEnabled="{Binding Path=NodeToolBoxModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        GridSnapCellSize="10 10" Margin="10" Padding="5"
+                        MaximumSelectionCount="1">
             </go:Palette>
         </Grid>
         <!--#endregion -->
@@ -59,6 +112,7 @@
             <!--#endregion-->
             
             <!--#region Center area-->
+                       
             <Grid Grid.Row="1">
                 <go:Diagram x:Name="GraphLink"
                         HasDefaultModel="True"
@@ -67,6 +121,7 @@
 				        NodeTemplate="{StaticResource NodeTemplate}"
                         LinkTemplate="{StaticResource LinkTemplate}"
                         Model="{Binding Path=GraphLinksModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        AllowZoom="{Binding Path=GraphLinksModel.Settings.AllowZoom, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDragOut="{Binding Path=GraphLinksModel.Settings.AllowDragOut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDrop="{Binding Path=GraphLinksModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridVisible="{Binding Path=GraphLinksModel.Settings.GridVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -74,10 +129,18 @@
                         GridSnapEnabled="{Binding Path=GraphLinksModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapCellSize="10 10">
 
+                    <go:Diagram.ClickCreatingTool>
+                        <controls:CustomClickCreatingTool DoubleClick="True">
+                            <controls:CustomClickCreatingTool.PrototypeData>
+                                <models:MoNodeData />
+                            </controls:CustomClickCreatingTool.PrototypeData>
+                        </controls:CustomClickCreatingTool>
+                    </go:Diagram.ClickCreatingTool>
+                    
                     <go:Diagram.RotatingTool>
                         <go:RotatingTool SnapAngleEpsilon="45" SnapAngleMultiple="45" />
                     </go:Diagram.RotatingTool>
-                    
+
                     <go:Diagram.GridPattern>
                         <go:GridPattern CellSize="10 10">
                             <Path Stroke="LightGray" StrokeThickness="1" go:GridPattern.Figure="HorizontalLine" />
@@ -90,7 +153,6 @@
                             <Path Stroke="Blue" StrokeThickness="2" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="20" />
                         </go:GridPattern>
                     </go:Diagram.GridPattern>
-
                 </go:Diagram>
 
                 <go:Overview x:Name="GraphLinkOverview"
@@ -124,8 +186,14 @@
                         NodeTemplate="{StaticResource PaletteNodeTemplate}"
                         LinkTemplate="{StaticResource PaletteLinkTemplate}"
                         Model="{Binding Path=LinkToolBoxModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        AllowZoom="{Binding Path=LinkToolBoxModel.Settings.AllowZoom, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDragOut="{Binding Path=LinkToolBoxModel.Settings.AllowDragOut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        AllowDrop="{Binding Path=LinkToolBoxModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        AllowDrop="{Binding Path=LinkToolBoxModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        GridVisible="{Binding Path=LinkToolBoxModel.Settings.GridVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        InitialScale="{Binding Path=LinkToolBoxModel.Settings.InitialScale, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        GridSnapEnabled="{Binding Path=LinkToolBoxModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        GridSnapCellSize="10 10" Margin="10" Padding="5"
+                        MaximumSelectionCount="1">
             </go:Palette>
         </Grid>
         <!--#endregion -->
