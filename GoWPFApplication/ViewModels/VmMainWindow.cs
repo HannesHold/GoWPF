@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using GoWPFApplication.Enumerations;
 using GoWPFApplication.Models;
 using Northwoods.GoXam;
+using Northwoods.GoXam.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -119,7 +121,6 @@ namespace GoWPFApplication.ViewModels
         #endregion
 
         #region Methods
-
         private void InitializeCommands()
         {
             SelectInToolBoxCommand = new RelayCommand<object?>(ExecuteSelectInToolBox, CanExecuteSelectInToolBox);
@@ -166,7 +167,8 @@ namespace GoWPFApplication.ViewModels
             {
                 var newLinkData = new MoLinkData()
                 {
-                    Text = $"LT {i}"
+                    Text = $"LT {i}",
+                    Points = new ObservableCollection<Point>() { new Point(0, 0), new Point(40, 40) } 
                 };
 
                 // Select first node in the links tool box
@@ -175,6 +177,17 @@ namespace GoWPFApplication.ViewModels
                 newLinkData.GenerateLinkVisual();
                 LinkToolBoxModelLinksSource.Add(newLinkData);
             }
+
+            //Workarround to get correct non-overlapping items in the links toolbox
+            var nodesSource = new ObservableCollection<MoNodeData>();
+
+            var newNodedata = new MoNodeData()
+            {
+                Text = $"Temp"
+            };
+
+            nodesSource.Add(newNodedata);
+            linksToolBoxModel.NodesSource = nodesSource;
 
             //Set model properties
             linksToolBoxModel.HasUndoManager = false;
@@ -199,8 +212,212 @@ namespace GoWPFApplication.ViewModels
             graphLinksModel.HasUndoManager = true;
             graphLinksModel.Modifiable = true;
 
+            //Subscribe to events
+            graphLinksModel.Changed += GraphLinksModel_Changed;
+
             //Assign model
             GraphLinksModel = graphLinksModel;
+        }
+
+        private void GraphLinksModel_Changed(object? sender, ModelChangedEventArgs e)
+        {
+            var addedNodes = new List<ModelChangedEventArgs>();
+            var addedLinks = new List<ModelChangedEventArgs>();
+
+            if (e.Change == ModelChange.CommittedTransaction)
+            {
+                UndoManager.CompoundEdit? cedit = e.OldValue as UndoManager.CompoundEdit;
+
+                if (cedit != null)
+                {
+                    foreach (ModelChangedEventArgs edit in cedit.Edits)
+                    {
+                        switch (edit.Change)
+                        {
+                            case ModelChange.Property:
+
+                                if (edit.PropertyName == nameof(MoNodeData.Location))
+                                {
+                                    // Update stuff in the backend concerning the nodes location
+
+                                    continue;
+                                }
+
+                                if (edit.PropertyName == nameof(MoNodeData.Width))
+                                {
+                                    // Update stuff in the backend concerning the nodes width
+
+                                    continue;
+                                }
+
+                                break;
+                            case ModelChange.ChangedNodesSource:
+                                break;
+                            case ModelChange.ChangedNodeKeyPath:
+                                break;
+                            case ModelChange.ChangedNodeCategoryPath:
+                                break;
+                            case ModelChange.ChangedNodeIsGroupPath:
+                                break;
+                            case ModelChange.ChangedGroupNodePath:
+                                break;
+                            case ModelChange.ChangedMemberNodesPath:
+                                break;
+                            case ModelChange.ChangedNodeIsLinkLabelPath:
+                                break;
+                            case ModelChange.ChangedLinksSource:
+                                break;
+                            case ModelChange.ChangedLinkFromPath:
+                                break;
+                            case ModelChange.ChangedLinkToPath:
+                                break;
+                            case ModelChange.ChangedFromNodesPath:
+                                break;
+                            case ModelChange.ChangedToNodesPath:
+                                break;
+                            case ModelChange.ChangedLinkLabelNodePath:
+                                break;
+                            case ModelChange.ChangedLinkFromParameterPath:
+                                break;
+                            case ModelChange.ChangedLinkToParameterPath:
+                                break;
+                            case ModelChange.ChangedLinkCategoryPath:
+                                break;
+                            case ModelChange.ChangedName:
+                                break;
+                            case ModelChange.ChangedDataFormat:
+                                break;
+                            case ModelChange.ChangedModifiable:
+                                break;
+                            case ModelChange.ChangedCopyingGroupCopiesMembers:
+                                break;
+                            case ModelChange.ChangedCopyingLinkCopiesLabel:
+                                break;
+                            case ModelChange.ChangedRemovingGroupRemovesMembers:
+                                break;
+                            case ModelChange.ChangedRemovingLinkRemovesLabel:
+                                break;
+                            case ModelChange.ChangedValidCycle:
+                                break;
+                            case ModelChange.ChangedValidUnconnectedLinks:
+                                break;
+                            case ModelChange.AddedNode:
+                                break;
+                            case ModelChange.RemovingNode:
+                                break;
+                            case ModelChange.RemovedNode:
+                                addedNodes.Add(edit);
+                                break;
+                            case ModelChange.ChangedNodeKey:
+                                break;
+                            case ModelChange.AddedLink:
+                                addedLinks.Add(edit);
+                                break;
+                            case ModelChange.RemovingLink:
+                                break;
+                            case ModelChange.RemovedLink:
+                                break;
+                            case ModelChange.ChangedLinkFromPort:
+                                break;
+                            case ModelChange.ChangedLinkToPort:
+                                break;
+                            case ModelChange.ChangedLinkLabelKey:
+                                break;
+                            case ModelChange.ChangedFromNodeKeys:
+                                break;
+                            case ModelChange.AddedFromNodeKey:
+                                break;
+                            case ModelChange.RemovedFromNodeKey:
+                                break;
+                            case ModelChange.ChangedToNodeKeys:
+                                break;
+                            case ModelChange.AddedToNodeKey:
+                                break;
+                            case ModelChange.RemovedToNodeKey:
+                                break;
+                            case ModelChange.ChangedGroupNodeKey:
+                                break;
+                            case ModelChange.ChangedLinkGroupNodeKey:
+                                break;
+                            case ModelChange.ChangedMemberNodeKeys:
+                                break;
+                            case ModelChange.AddedMemberNodeKey:
+                                break;
+                            case ModelChange.RemovedMemberNodeKey:
+                                break;
+                            case ModelChange.ChangedParentNodeKey:
+                                break;
+                            case ModelChange.ChangedChildNodeKeys:
+                                break;
+                            case ModelChange.AddedChildNodeKey:
+                                break;
+                            case ModelChange.RemovedChildNodeKey:
+                                break;
+                            case ModelChange.ChangedNodeCategory:
+                                break;
+                            case ModelChange.ChangedLinkCategory:
+                                break;
+                            case ModelChange.StartedTransaction:
+                                break;
+                            case ModelChange.CommittedTransaction:
+                                break;
+                            case ModelChange.RolledBackTransaction:
+                                break;
+                            case ModelChange.StartingUndo:
+                                break;
+                            case ModelChange.StartingRedo:
+                                break;
+                            case ModelChange.FinishedUndo:
+                                break;
+                            case ModelChange.FinishedRedo:
+                                break;
+                            case ModelChange.InvalidateRelationships:
+                                break;
+                            case ModelChange.ReplacedReference:
+                                break;
+                            case ModelChange.ClearedUndoManager:
+                                break;
+                            case ModelChange.None:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                // Handle added nodes
+                foreach (var node in addedNodes)
+                {
+
+                }
+
+                // Handle added links
+                foreach (var link in addedLinks)
+                {
+                    // Apply visual to the link
+                    var linkData = link.Data as MoLinkData;
+                    if (linkData is not null)
+                    {
+                        if (SelectedToolBoxLink is not null)
+                        {
+                            var selectedToolBoxLink = SelectedToolBoxLink.Data as MoLinkData;
+
+                            if (selectedToolBoxLink is not null)
+                            {
+                                linkData.BackColor = selectedToolBoxLink.BackColor;
+                                linkData.ForeColor = selectedToolBoxLink.ForeColor;
+                                linkData.FromArrow = selectedToolBoxLink.FromArrow;
+                                linkData.FromArrowSacle = selectedToolBoxLink.FromArrowSacle;
+                                linkData.ToArrow = selectedToolBoxLink.ToArrow;
+                                linkData.ToArrowSacle = selectedToolBoxLink.ToArrowSacle;
+                                linkData.Thickness = selectedToolBoxLink.Thickness;
+                                linkData.DashArray = selectedToolBoxLink.DashArray;
+                            }
+                        }
+                    }
+                }
+
+            }
         }
 
         #endregion

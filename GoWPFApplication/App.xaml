@@ -118,25 +118,55 @@
                 </go:Link.Route>
 
                 <!--This is the from-arrow-->
-                <Path Fill="Red" go:LinkPanel.FromArrow="None" />
+                <Path Fill="{Binding Path=Data.BackColor}"
+                      go:LinkPanel.FromArrow="{Binding Path=Data.FromArrow}" 
+                      go:LinkPanel.FromArrowScale="{Binding Path=Data.FromArrow}" />
 
-                <!--This is the actual from-to path-->
-                <go:LinkShape x:Name="Path" Stroke="Black" StrokeThickness="1" />
+                <!--This is transparent thicker shape for easier selection-->
+                <go:LinkShape Stroke="Transparent" StrokeThickness="5" />
                 
+                <!--This is the actual from-to path-->
+                <go:LinkShape x:Name="Path" 
+                              Stroke="{Binding Path=Data.BackColor}"       
+                              StrokeDashArray="{Binding Path=Data.DashArray}"
+                              StrokeThickness="{Binding Path=Data.Thickness}" />
+
                 <!--This is the to-arrow-->
-                <Path Fill="Red" go:LinkPanel.ToArrow="Triangle" />
+                <Path Fill="{Binding Path=Data.BackColor}"
+                      go:LinkPanel.ToArrow="{Binding Path=Data.ToArrow}" 
+                      go:LinkPanel.ToArrowScale="{Binding Path=Data.ToArrowScale}" />
             </go:LinkPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="PaletteLinkTemplate">
+            <go:LinkPanel Background="Transparent"
+                          go:Part.SelectionElementName="Path" go:Part.SelectionAdorned="True"
+                          go:Part.SelectionAdornmentTemplate="{StaticResource LinkSelectionAdornmentTemplate}">
 
-            
-            <go:LinkPanel Background="Red" Width="40" Height="40"
-          go:Part.SelectionElementName="Path" go:Part.SelectionAdorned="True"
-          go:Part.SelectionAdornmentTemplate="{StaticResource LinkSelectionAdornmentTemplate}">
+                <!--This is the from-arrow-->
+                <Path Fill="{Binding Path=Data.BackColor}"
+                      go:LinkPanel.FromArrow="{Binding Path=Data.FromArrow}" 
+                      go:LinkPanel.FromArrowScale="{Binding Path=Data.FromArrow}" />
+
+                <!--This is transparent thicker shape for easier selection-->
                 <go:LinkShape Stroke="Transparent" StrokeThickness="5" />
-                <go:LinkShape x:Name="Path" Stroke="Black" StrokeThickness="1" />
-                <Path Fill="Black" go:LinkPanel.ToArrow="Triangle" />
+
+                <!--This is the actual from-to path-->
+                <go:LinkShape x:Name="Path" 
+                              Stroke="{Binding Path=Data.BackColor}"       
+                              StrokeDashArray="{Binding Path=Data.DashArray}"
+                              StrokeThickness="{Binding Path=Data.Thickness}" />
+
+                <!--This is the to-arrow-->
+                <Path Fill="{Binding Path=Data.BackColor}"
+                      go:LinkPanel.ToArrow="{Binding Path=Data.ToArrow}" 
+                      go:LinkPanel.ToArrowScale="{Binding Path=Data.ToArrowScale}" />
+
+                <Viewbox>
+                    <TextBlock Margin="2" Text="{Binding Path=Data.Text, Mode=TwoWay}" TextWrapping="Wrap"
+                               Foreground="{Binding Path=Data.ForeColor}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Viewbox>
             </go:LinkPanel>
         </DataTemplate>
 

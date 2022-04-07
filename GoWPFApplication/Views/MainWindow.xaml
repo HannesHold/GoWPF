@@ -238,6 +238,9 @@
                         GridSnapCellSize="10 10" Margin="10" Padding="5"
                         SelectedLink="{Binding Path=SelectedToolBoxLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         MaximumSelectionCount="1">
+                    <go:Diagram.PartManager>
+                        <controls:CustomPartManager />
+                    </go:Diagram.PartManager>
                 </go:Palette>
             </Grid>
             <!--#endregion -->
