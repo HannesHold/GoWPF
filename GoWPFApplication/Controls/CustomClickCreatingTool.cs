@@ -14,7 +14,7 @@ namespace GoWPFApplication.Controls
 
         public CustomClickCreatingTool()
         {
-            System.Diagnostics.Debug.WriteLine($"CustomClickCreatingTool constructor");
+
         }
 
         #endregion
@@ -31,6 +31,5 @@ namespace GoWPFApplication.Controls
         }
 
         #endregion
-
     }
 }

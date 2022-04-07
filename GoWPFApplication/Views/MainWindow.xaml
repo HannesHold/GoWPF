@@ -128,10 +128,12 @@
                         <ToggleButton Content="Read only" Margin="2" Width="100"
                                       IsChecked="{Binding Path=GraphLinksModel.Settings.IsReadOnly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <ToggleButton Content="Grid visible" Margin="2" Width="100"
                                       IsChecked="{Binding Path=GraphLinksModel.Settings.GridVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <ToggleButton Content="Overview visible" Margin="2" Width="100"
                                       IsChecked="{Binding Path=GraphLinksModel.Settings.OverviewVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -140,7 +142,6 @@
                 <!--#endregion-->
 
                 <!--#region Center area-->
-
                 <Grid Grid.Row="1">
                     <go:Diagram x:Name="GraphLink"
                         HasDefaultModel="True"
@@ -195,8 +196,24 @@
                 <!--#endregion-->
 
                 <!--#region Bottom area-->
-                <Grid Grid.Row="0">
+                <Grid Grid.Row="2">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Margin="2">
+                            <Run Text="Nodes:"/>
+                            <Run Text="{Binding GraphLinksModelNodesSource.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Margin="2">
+                            <Run Text="Links:"/>
+                            <Run Text="{Binding GraphLinksModelLinksSource.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </TextBlock>
+                    </StackPanel>
                 </Grid>
                 <!--#endregion-->
 

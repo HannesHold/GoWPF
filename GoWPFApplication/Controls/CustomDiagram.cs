@@ -17,6 +17,5 @@ namespace GoWPFApplication.Controls
         }
 
         #endregion
-
     }
 }
