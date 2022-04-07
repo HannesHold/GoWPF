@@ -5,12 +5,16 @@
         xmlns:go="http://schemas.nwoods.com/GoXam"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:GoWPFApplication.Controls"
+        xmlns:converters="clr-namespace:GoWPFApplication.Converters"
         xmlns:enumerations="clr-namespace:GoWPFApplication.Enumerations"
-        xmlns:models="clr-namespace:GoWPFApplication.Models"
         xmlns:viewModels="clr-namespace:GoWPFApplication.ViewModels"
         mc:Ignorable="d"
         Title="GoWPF Application" Height="720 " Width="1280">
 
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+    
     <Window.DataContext>
         <viewModels:VmMainWindow />
     </Window.DataContext>
@@ -58,24 +62,36 @@
         <KeyBinding Gesture="ALT+0" Command="{Binding SelectInToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     CommandParameter="{x:Static enumerations:InputGestures.AltPlus0}" />
     </Window.InputBindings>
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <!--Left area-->
-            <ColumnDefinition Width="240" />
-            <!--Grid splitter-->
-            <ColumnDefinition Width="6" />
-            <!--Center area-->
-            <ColumnDefinition Width="*" />
-            <!--Grid splitter-->
-            <ColumnDefinition Width="6" />
-            <!--Right area-->
-            <ColumnDefinition Width="240" />
-        </Grid.ColumnDefinitions>
 
-        <!--#region Left area-->
-        <Grid Grid.Column="0">
-            <go:Palette x:Name="NodeToolBox"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <TextBlock Text="Nodes toolbox (CTRL+n)" Margin="2" HorizontalAlignment="Left" />
+            <TextBlock Text="Diagram" Margin="2" HorizontalAlignment="Center" />
+            <TextBlock Text="Links toolbox (ALT+n)" Margin="2" HorizontalAlignment="Right" />
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!--Left area-->
+                <ColumnDefinition Width="240" />
+                <!--Grid splitter-->
+                <ColumnDefinition Width="6" />
+                <!--Center area-->
+                <ColumnDefinition Width="*" />
+                <!--Grid splitter-->
+                <ColumnDefinition Width="6" />
+                <!--Right area-->
+                <ColumnDefinition Width="240" />
+            </Grid.ColumnDefinitions>
+
+            <!--#region Left area-->
+            <Grid Grid.Column="0">
+                <go:Palette x:Name="NodeToolBox"
                         HasDefaultModel="True"						                        
                         NodeTemplate="{StaticResource PaletteNodeTemplate}"
                         LinkTemplate="{StaticResource PaletteLinkTemplate}"
@@ -87,40 +103,53 @@
                         InitialScale="{Binding Path=NodeToolBoxModel.Settings.InitialScale, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapEnabled="{Binding Path=NodeToolBoxModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapCellSize="10 10" Margin="10" Padding="5"
+                        SelectedNode="{Binding Path=SelectedToolBoxNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         MaximumSelectionCount="1">
-            </go:Palette>
-        </Grid>
-        <!--#endregion -->
-
-        <GridSplitter Grid.Column="1" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"/>
-
-        <!--#region Center area-->
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <!--Top area-->
-                <RowDefinition Height="Auto" />
-                <!--Center area-->
-                <RowDefinition Height="*" />
-                <!--Bottom area-->
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <!--#region Top area-->
-            <Grid Grid.Row="0">
-                
+                </go:Palette>
             </Grid>
-            <!--#endregion-->
-            
+            <!--#endregion -->
+
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"/>
+
             <!--#region Center area-->
-                       
-            <Grid Grid.Row="1">
-                <go:Diagram x:Name="GraphLink"
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <!--Top area-->
+                    <RowDefinition Height="Auto" />
+                    <!--Center area-->
+                    <RowDefinition Height="*" />
+                    <!--Bottom area-->
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--#region Top area-->
+                <Grid Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <ToggleButton Content="Read only" Margin="2" Width="100"
+                                      IsChecked="{Binding Path=GraphLinksModel.Settings.IsReadOnly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ToggleButton Content="Grid visible" Margin="2" Width="100"
+                                      IsChecked="{Binding Path=GraphLinksModel.Settings.GridVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <ToggleButton Content="Overview visible" Margin="2" Width="100"
+                                      IsChecked="{Binding Path=GraphLinksModel.Settings.OverviewVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
+                <!--#endregion-->
+
+                <!--#region Center area-->
+
+                <Grid Grid.Row="1">
+                    <go:Diagram x:Name="GraphLink"
                         HasDefaultModel="True"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
 				        NodeTemplate="{StaticResource NodeTemplate}"
                         LinkTemplate="{StaticResource LinkTemplate}"
                         Model="{Binding Path=GraphLinksModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsReadOnly="{Binding Path=GraphLinksModel.Settings.IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowZoom="{Binding Path=GraphLinksModel.Settings.AllowZoom, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDragOut="{Binding Path=GraphLinksModel.Settings.AllowDragOut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowDrop="{Binding Path=GraphLinksModel.Settings.AllowDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -129,59 +158,56 @@
                         GridSnapEnabled="{Binding Path=GraphLinksModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapCellSize="10 10">
 
-                    <go:Diagram.ClickCreatingTool>
-                        <controls:CustomClickCreatingTool DoubleClick="True">
-                            <controls:CustomClickCreatingTool.PrototypeData>
-                                <models:MoNodeData />
-                            </controls:CustomClickCreatingTool.PrototypeData>
-                        </controls:CustomClickCreatingTool>
-                    </go:Diagram.ClickCreatingTool>
-                    
-                    <go:Diagram.RotatingTool>
-                        <go:RotatingTool SnapAngleEpsilon="45" SnapAngleMultiple="45" />
-                    </go:Diagram.RotatingTool>
+                        <go:Diagram.ClickCreatingTool>
+                            <controls:CustomClickCreatingTool DoubleClick="True" PrototypeData="{Binding SelectedToolBoxNode.Data, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </go:Diagram.ClickCreatingTool>
 
-                    <go:Diagram.GridPattern>
-                        <go:GridPattern CellSize="10 10">
-                            <Path Stroke="LightGray" StrokeThickness="1" go:GridPattern.Figure="HorizontalLine" />
-                            <Path Stroke="LightGray" StrokeThickness="1" go:GridPattern.Figure="VerticalLine" />
-                            <Path Stroke="LightGreen" StrokeThickness="1" go:GridPattern.Figure="HorizontalLine" go:GridPattern.Interval="5" />
-                            <Path Stroke="LightBlue" StrokeThickness="1" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="5" />
-                            <Path Stroke="Orange" StrokeThickness="1" go:GridPattern.Figure="HorizontalLine" go:GridPattern.Interval="10" />
-                            <Path Stroke="Purple" StrokeThickness="1" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="10" />
-                            <Path Stroke="Green" StrokeThickness="2" go:GridPattern.Figure="HorizontalLine" go:GridPattern.Interval="20" />
-                            <Path Stroke="Blue" StrokeThickness="2" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="20" />
-                        </go:GridPattern>
-                    </go:Diagram.GridPattern>
-                </go:Diagram>
+                        <go:Diagram.RotatingTool>
+                            <go:RotatingTool SnapAngleEpsilon="15" SnapAngleMultiple="15" />
+                        </go:Diagram.RotatingTool>
 
-                <go:Overview x:Name="GraphLinkOverview"
-                         Width="200" Height="200"
+                        <go:Diagram.GridPattern>
+                            <go:GridPattern CellSize="10 10">
+                                <Path Stroke="LightGray" StrokeThickness=".2" go:GridPattern.Figure="HorizontalLine" />
+                                <Path Stroke="LightGray" StrokeThickness=".2" go:GridPattern.Figure="VerticalLine" />
+                                <Path Stroke="LightGreen" StrokeThickness=".2" go:GridPattern.Figure="HorizontalLine" go:GridPattern.Interval="5" />
+                                <Path Stroke="LightBlue" StrokeThickness=".2" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="5" />
+                                <Path Stroke="Orange" StrokeThickness=".2" go:GridPattern.Figure="HorizontalLine" go:GridPattern.Interval="10" />
+                                <Path Stroke="Purple" StrokeThickness=".2" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="10" />
+                                <Path Stroke="Green" StrokeThickness=".2" go:GridPattern.Figure="HorizontalLine" go:GridPattern.Interval="20" />
+                                <Path Stroke="Blue" StrokeThickness=".2" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="20" />
+                            </go:GridPattern>
+                        </go:Diagram.GridPattern>
+                    </go:Diagram>
+
+                    <go:Overview x:Name="GraphLinkOverview"
+                         Width="180" Height="180"
                          HorizontalAlignment="Right"
                          VerticalAlignment="Top"
                          BorderBrush="Gray"
                          BorderThickness="1"
                          Background="White"
-                         Margin="40"
+                         Margin="10"
+                         Visibility="{Binding Path=GraphLinksModel.Settings.OverviewVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}"
                          Observed="{Binding ElementName=GraphLink}">
-                </go:Overview>
+                    </go:Overview>
+                </Grid>
+                <!--#endregion-->
+
+                <!--#region Bottom area-->
+                <Grid Grid.Row="0">
+
+                </Grid>
+                <!--#endregion-->
+
             </Grid>
-            <!--#endregion-->
+            <!--#endregion -->
 
-            <!--#region Bottom area-->
-            <Grid Grid.Row="0">
+            <GridSplitter Grid.Column="3" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"/>
 
-            </Grid>
-            <!--#endregion-->
-
-        </Grid>
-        <!--#endregion -->
-
-        <GridSplitter Grid.Column="3" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"/>
-
-        <!--#region Right area-->
-        <Grid Grid.Column="4">
-            <go:Palette x:Name="LinkToolBox"
+            <!--#region Right area-->
+            <Grid Grid.Column="4">
+                <go:Palette x:Name="LinkToolBox"
                         HasDefaultModel="True"
                         NodeTemplate="{StaticResource PaletteNodeTemplate}"
                         LinkTemplate="{StaticResource PaletteLinkTemplate}"
@@ -193,10 +219,13 @@
                         InitialScale="{Binding Path=LinkToolBoxModel.Settings.InitialScale, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapEnabled="{Binding Path=LinkToolBoxModel.Settings.GridSnapEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         GridSnapCellSize="10 10" Margin="10" Padding="5"
+                        SelectedLink="{Binding Path=SelectedToolBoxLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         MaximumSelectionCount="1">
-            </go:Palette>
-        </Grid>
-        <!--#endregion -->
+                </go:Palette>
+            </Grid>
+            <!--#endregion -->
 
+        </Grid>
     </Grid>
+    
 </Window>

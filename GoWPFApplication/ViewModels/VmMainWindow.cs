@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using GoWPFApplication.Enumerations;
 using GoWPFApplication.Models;
+using Northwoods.GoXam;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -43,6 +44,18 @@ namespace GoWPFApplication.ViewModels
             private set => SetProperty(ref _nodeToolBoxModel, value);
         }
 
+        private Node _selectedToolBoxNode;
+
+        public Node SelectedToolBoxNode
+        {
+            get { return _selectedToolBoxNode; }
+            set 
+            { 
+                _selectedToolBoxNode = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ObservableCollection<MoNodeData>? _nodeToolBoxModelNodesSource;
 
         public ObservableCollection<MoNodeData>? NodeToolBoxModelNodesSource
@@ -59,12 +72,24 @@ namespace GoWPFApplication.ViewModels
             private set => SetProperty(ref _linkToolBoxModel, value);
         }
 
-        private ObservableCollection<MoNodeData>? _linkToolBoxModelNodesSource;
+        private Link _selectedToolBoxLink;
 
-        public ObservableCollection<MoNodeData>? LinkToolBoxModelNodesSource
+        public Link SelectedToolBoxLink
         {
-            get => _linkToolBoxModelNodesSource;
-            private set => SetProperty(ref _linkToolBoxModelNodesSource, value);
+            get { return _selectedToolBoxLink; }
+            set
+            {
+                _selectedToolBoxLink = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<MoLinkData>? _linkToolBoxModelLinksSource;
+
+        public ObservableCollection<MoLinkData>? LinkToolBoxModelLinksSource
+        {
+            get => _linkToolBoxModelLinksSource;
+            private set => SetProperty(ref _linkToolBoxModelLinksSource, value);
         }
 
         private MoGraphLinks? _graphLinksModel;
@@ -107,7 +132,7 @@ namespace GoWPFApplication.ViewModels
             //Fill data
             NodeToolBoxModelNodesSource = new ObservableCollection<MoNodeData>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 80; i++)
             {
                 var newNodedata = new MoNodeData()
                 {
@@ -135,25 +160,25 @@ namespace GoWPFApplication.ViewModels
             var linksToolBoxModel = new MoGraphLinks(GraphLinksSettingTargets.LinksToolBoxModel);
 
             //Fill data
-            LinkToolBoxModelNodesSource = new ObservableCollection<MoNodeData>();
+            LinkToolBoxModelLinksSource = new ObservableCollection<MoLinkData>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 80; i++)
             {
-                var newNodedata = new MoNodeData()
+                var newLinkData = new MoLinkData()
                 {
                     Text = $"LT {i}"
                 };
 
                 // Select first node in the links tool box
-                if (i == 0) newNodedata.IsSelected = true;
+                if (i == 0) newLinkData.IsSelected = true;
 
-                newNodedata.GenerateLinkVisual();
-                LinkToolBoxModelNodesSource.Add(newNodedata);
+                newLinkData.GenerateLinkVisual();
+                LinkToolBoxModelLinksSource.Add(newLinkData);
             }
 
             //Set model properties
             linksToolBoxModel.HasUndoManager = false;
-            linksToolBoxModel.NodesSource = LinkToolBoxModelNodesSource;
+            linksToolBoxModel.LinksSource = LinkToolBoxModelLinksSource;
             linksToolBoxModel.Modifiable = false;
 
             //Assign model
@@ -279,82 +304,82 @@ namespace GoWPFApplication.ViewModels
                         }
                         break;
                     case InputGestures.AltPlus1:
-                        var link1 = LinkToolBoxModelNodesSource?.Skip(0).Take(1).FirstOrDefault();
+                        var link1 = LinkToolBoxModelLinksSource?.Skip(0).Take(1).FirstOrDefault();
                         if (link1 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link1.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus2:
-                        var link2 = LinkToolBoxModelNodesSource?.Skip(1).Take(1).FirstOrDefault();
+                        var link2 = LinkToolBoxModelLinksSource?.Skip(1).Take(1).FirstOrDefault();
                         if (link2 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link2.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus3:
-                        var link3 = LinkToolBoxModelNodesSource?.Skip(2).Take(1).FirstOrDefault();
+                        var link3 = LinkToolBoxModelLinksSource?.Skip(2).Take(1).FirstOrDefault();
                         if (link3 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link3.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus4:
-                        var link4 = LinkToolBoxModelNodesSource?.Skip(3).Take(1).FirstOrDefault();
+                        var link4 = LinkToolBoxModelLinksSource?.Skip(3).Take(1).FirstOrDefault();
                         if (link4 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link4.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus5:
-                        var link5 = LinkToolBoxModelNodesSource?.Skip(4).Take(1).FirstOrDefault();
+                        var link5 = LinkToolBoxModelLinksSource?.Skip(4).Take(1).FirstOrDefault();
                         if (link5 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link5.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus6:
-                        var link6 = LinkToolBoxModelNodesSource?.Skip(5).Take(1).FirstOrDefault();
+                        var link6 = LinkToolBoxModelLinksSource?.Skip(5).Take(1).FirstOrDefault();
                         if (link6 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link6.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus7:
-                        var link7 = LinkToolBoxModelNodesSource?.Skip(6).Take(1).FirstOrDefault();
+                        var link7 = LinkToolBoxModelLinksSource?.Skip(6).Take(1).FirstOrDefault();
                         if (link7 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link7.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus8:
-                        var link8 = LinkToolBoxModelNodesSource?.Skip(7).Take(1).FirstOrDefault();
+                        var link8 = LinkToolBoxModelLinksSource?.Skip(7).Take(1).FirstOrDefault();
                         if (link8 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link8.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus9:
-                        var link9 = LinkToolBoxModelNodesSource?.Skip(8).Take(1).FirstOrDefault();
+                        var link9 = LinkToolBoxModelLinksSource?.Skip(8).Take(1).FirstOrDefault();
                         if (link9 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link9.IsSelected = true;
                         }
                         break;
                     case InputGestures.AltPlus0:
-                        var link10 = LinkToolBoxModelNodesSource?.Skip(9).Take(1).FirstOrDefault();
+                        var link10 = LinkToolBoxModelLinksSource?.Skip(9).Take(1).FirstOrDefault();
                         if (link10 is not null)
                         {
-                            LinkToolBoxModelNodesSource?.ToList().ForEach(n => n.IsSelected = false);
+                            LinkToolBoxModelLinksSource?.ToList().ForEach(n => n.IsSelected = false);
                             link10.IsSelected = true;
                         }
                         break;

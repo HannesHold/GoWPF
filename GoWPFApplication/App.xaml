@@ -46,7 +46,6 @@
         <DataTemplate x:Key="NodeTemplate">
             <go:SpotPanel Cursor="Hand"
           go:Node.Location="{Binding Path=Data.Location, Mode=TwoWay}"
-
           go:Part.SelectionAdorned="True"
           go:Part.SelectionAdornmentTemplate="{StaticResource NodeSelectionAdornmentTemplate}"
           go:Part.Resizable="True"

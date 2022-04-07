@@ -25,7 +25,15 @@ namespace GoWPFApplication.Models
             private set => SetProperty(ref _settingTarget, value);
         }
 
-        #region Settings
+        #region Settings      
+
+        private bool _isReadOnly;
+
+        public bool IsReadOnly
+        {
+            get => _isReadOnly;
+            set => SetProperty(ref _isReadOnly, value);
+        }
 
         private bool _allowZoom;
 
@@ -70,6 +78,13 @@ namespace GoWPFApplication.Models
         {
             get => _gridSnapEnabled;
             set => SetProperty(ref _gridSnapEnabled, value);
+        }
+
+        private bool _overviewVisible;
+        public bool OverviewVisible
+        {
+            get => _overviewVisible;
+            set => SetProperty(ref _overviewVisible, value);
         }       
 
         #endregion
@@ -83,28 +98,34 @@ namespace GoWPFApplication.Models
             switch (SettingTarget)
             {
                 case GraphLinksSettingTargets.NodesToolBoxModel:
+                    IsReadOnly = false;
                     AllowZoom = false;
                     AllowDragOut = true;
                     AllowDrop = false;
                     GridVisible = false;
                     InitialScale = 1;
                     GridSnapEnabled = true;
+                    OverviewVisible = false;
                     break;
                 case GraphLinksSettingTargets.LinksToolBoxModel:
+                    IsReadOnly = false;
                     AllowZoom = false;
                     AllowDragOut = true;
                     AllowDrop = false;
                     GridVisible = false;
                     InitialScale = 1;
                     GridSnapEnabled = true;
+                    OverviewVisible = false;
                     break;
                 case GraphLinksSettingTargets.GraphLinksModel:
+                    IsReadOnly = false;
                     AllowZoom = true;
                     AllowDragOut = false;
                     AllowDrop = true;
                     GridVisible = true;
                     InitialScale = 2;
                     GridSnapEnabled = true;
+                    OverviewVisible = true;
                     break;
             }
         }

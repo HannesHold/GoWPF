@@ -113,12 +113,7 @@ namespace GoWPFApplication.Models
 
         public void GenerateNodeVisual()
         {
-            BackColor = RandomBrushString();
-            ForeColor = RandomBrushString();
-        }
-
-        public void GenerateLinkVisual()
-        {
+            Figure = (NodeFigure)new Random().Next(Enum.GetNames(typeof(NodeFigure)).Length);
             BackColor = RandomBrushString();
             ForeColor = RandomBrushString();
         }
