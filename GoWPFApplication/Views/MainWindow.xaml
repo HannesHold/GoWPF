@@ -165,7 +165,7 @@
 
                 <!--#region Center area-->
                 <Grid Grid.Row="1">
-                    <go:Diagram x:Name="GraphLink"
+                    <controls:CustomDiagram x:Name="GraphLink"
                         HasDefaultModel="True"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
@@ -201,7 +201,7 @@
                                 <Path Stroke="Blue" StrokeThickness=".2" go:GridPattern.Figure="VerticalLine" go:GridPattern.Interval="20" />
                             </go:GridPattern>
                         </go:Diagram.GridPattern>
-                    </go:Diagram>
+                    </controls:CustomDiagram>
 
                     <go:Overview x:Name="GraphLinkOverview"
                          Width="180" Height="180"
