@@ -115,7 +115,7 @@ namespace GoWPFApplication.Models
         {
             Figure = (NodeFigure)new Random().Next(Enum.GetNames(typeof(NodeFigure)).Length);
             BackColor = RandomBrushString();
-            ForeColor = RandomBrushString();
+            ForeColor = Brushes.Black.ToString();
         }
 
         #endregion

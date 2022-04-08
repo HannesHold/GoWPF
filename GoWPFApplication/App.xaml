@@ -77,7 +77,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="PaletteNodeTemplate">
-            <go:NodePanel go:Part.SelectionAdorned="True">
+            <go:NodePanel go:Part.SelectionAdorned="True" go:Part.Text="{Binding Path=Data.Text}">
                 <go:NodeShape go:NodePanel.Figure="{Binding Path=Data.Figure}"
                               Stroke="Black" StrokeThickness="1"
                               Fill="{Binding Path=Data.BackColor}"
@@ -88,7 +88,8 @@
                 <Viewbox>
                     <TextBlock Margin="2" Text="{Binding Path=Data.Text, Mode=TwoWay}" TextWrapping="Wrap"
                                Foreground="{Binding Path=Data.ForeColor}"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               go:Part.TextEditable="False"/>
                 </Viewbox>
             </go:NodePanel>
         </DataTemplate>
@@ -120,7 +121,7 @@
                 <!--This is the from-arrow-->
                 <Path Fill="{Binding Path=Data.BackColor}"
                       go:LinkPanel.FromArrow="{Binding Path=Data.FromArrow}" 
-                      go:LinkPanel.FromArrowScale="{Binding Path=Data.FromArrow}" />
+                      go:LinkPanel.FromArrowScale="{Binding Path=Data.FromArrowScale}" />
 
                 <!--This is transparent thicker shape for easier selection-->
                 <go:LinkShape Stroke="Transparent" StrokeThickness="5" />
@@ -135,6 +136,21 @@
                 <Path Fill="{Binding Path=Data.BackColor}"
                       go:LinkPanel.ToArrow="{Binding Path=Data.ToArrow}" 
                       go:LinkPanel.ToArrowScale="{Binding Path=Data.ToArrowScale}" />
+
+                <!--This is the from-text-->
+                <TextBlock Text="From" go:LinkPanel.Index="0"
+                   go:LinkPanel.Offset="NaN NaN"
+                   go:LinkPanel.Orientation="Upright" />
+                
+                <!--This is the mid-text-->
+                <TextBlock Text="Mid"
+                   go:LinkPanel.Offset="0 NaN"
+                   go:LinkPanel.Orientation="Upright" />
+
+                <!--This is the to-text-->
+                <TextBlock Text="To" go:LinkPanel.Index="-1"
+                   go:LinkPanel.Offset="NaN NaN"
+                   go:LinkPanel.Orientation="Upright" />
             </go:LinkPanel>
         </DataTemplate>
 
@@ -146,7 +162,7 @@
                 <!--This is the from-arrow-->
                 <Path Fill="{Binding Path=Data.BackColor}"
                       go:LinkPanel.FromArrow="{Binding Path=Data.FromArrow}" 
-                      go:LinkPanel.FromArrowScale="{Binding Path=Data.FromArrow}" />
+                      go:LinkPanel.FromArrowScale="{Binding Path=Data.FromArrowScale}" />
 
                 <!--This is transparent thicker shape for easier selection-->
                 <go:LinkShape Stroke="Transparent" StrokeThickness="5" />
@@ -162,6 +178,7 @@
                       go:LinkPanel.ToArrow="{Binding Path=Data.ToArrow}" 
                       go:LinkPanel.ToArrowScale="{Binding Path=Data.ToArrowScale}" />
 
+                <!--Template text-->
                 <Viewbox>
                     <TextBlock Margin="2" Text="{Binding Path=Data.Text, Mode=TwoWay}" TextWrapping="Wrap"
                                Foreground="{Binding Path=Data.ForeColor}"

@@ -70,9 +70,23 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBlock Text="Nodes toolbox (CTRL+n)" Margin="2" HorizontalAlignment="Left" />
-            <TextBlock Text="Diagram" Margin="2" HorizontalAlignment="Center" />
-            <TextBlock Text="Links toolbox (ALT+n)" Margin="2" HorizontalAlignment="Right" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Nodes toolbox (CTRL+n)" Margin="2" />
+                <Button Content="Gen." Margin="2" Width="40" 
+                        Command="{Binding GenerateToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="Nodes"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Diagram" Margin="2" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="Links toolbox (ALT+n)" Margin="2" />
+                <Button Content="Gen." Margin="2" Width="40" 
+                        Command="{Binding GenerateToolBoxCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="Links"/>
+            </StackPanel>
         </Grid>
         
         <Grid Grid.Row="1">
@@ -105,6 +119,14 @@
                         GridSnapCellSize="10 10" Margin="10" Padding="5"
                         SelectedNode="{Binding Path=SelectedToolBoxNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         MaximumSelectionCount="1">
+
+                    <go:Diagram.Layout>
+                        <controls:CustomToolboxNodeGridLayout />
+                    </go:Diagram.Layout>
+                    
+                    <go:Diagram.PartManager>
+                        <controls:CustomPartManager />
+                    </go:Diagram.PartManager>
                 </go:Palette>
             </Grid>
             <!--#endregion -->
@@ -238,6 +260,11 @@
                         GridSnapCellSize="10 10" Margin="10" Padding="5"
                         SelectedLink="{Binding Path=SelectedToolBoxLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         MaximumSelectionCount="1">
+                    
+                    <go:Diagram.Layout>
+                        <controls:CustomToolboxLinkGridLayout />
+                    </go:Diagram.Layout>
+                    
                     <go:Diagram.PartManager>
                         <controls:CustomPartManager />
                     </go:Diagram.PartManager>

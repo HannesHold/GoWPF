@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace GoWPFApplication.ViewModels
@@ -27,9 +28,9 @@ namespace GoWPFApplication.ViewModels
 
             InitializeCommands();
 
-            InitializeNodeToolBox();
+            InitializeNodeToolboxModel();
 
-            InitializeLinksToolBox();
+            InitializeLinksToolboxModel();
 
             InitializeGraphLinksModel();
         }
@@ -46,13 +47,13 @@ namespace GoWPFApplication.ViewModels
             private set => SetProperty(ref _nodeToolBoxModel, value);
         }
 
-        private Node _selectedToolBoxNode;
+        private Node? _selectedToolBoxNode;
 
-        public Node SelectedToolBoxNode
+        public Node? SelectedToolBoxNode
         {
             get { return _selectedToolBoxNode; }
-            set 
-            { 
+            set
+            {
                 _selectedToolBoxNode = value;
                 OnPropertyChanged();
             }
@@ -74,9 +75,9 @@ namespace GoWPFApplication.ViewModels
             private set => SetProperty(ref _linkToolBoxModel, value);
         }
 
-        private Link _selectedToolBoxLink;
+        private Link? _selectedToolBoxLink;
 
-        public Link SelectedToolBoxLink
+        public Link? SelectedToolBoxLink
         {
             get { return _selectedToolBoxLink; }
             set
@@ -124,28 +125,34 @@ namespace GoWPFApplication.ViewModels
         private void InitializeCommands()
         {
             SelectInToolBoxCommand = new RelayCommand<object?>(ExecuteSelectInToolBox, CanExecuteSelectInToolBox);
+            GenerateToolBoxCommand = new RelayCommand<object?>(ExecuteGenerateToolBox, CanExecuteGenerateToolBox);
         }
 
-        private void InitializeNodeToolBox()
+        private void GenerateNodeToolboxNodes()
         {
-            var nodeToolBoxModel = new MoGraphLinks(GraphLinksSettingTargets.NodesToolBoxModel);
+            NodeToolBoxModelNodesSource?.Clear();
 
-            //Fill data
-            NodeToolBoxModelNodesSource = new ObservableCollection<MoNodeData>();
-
-            for (int i = 0; i < 80; i++)
+            for (int i = 1; i < 11; i++)
             {
                 var newNodedata = new MoNodeData()
                 {
-                    Text = $"NT {i}"
+                    Text = $"N{i}"
                 };
 
                 // Select first node in the nodes tool box
-                if (i == 0) newNodedata.IsSelected = true;
-                
+                if (i == 1) newNodedata.IsSelected = true;
+
                 newNodedata.GenerateNodeVisual();
-                NodeToolBoxModelNodesSource.Add(newNodedata);
+                NodeToolBoxModelNodesSource?.Add(newNodedata);
             }
+        }
+
+        private void InitializeNodeToolboxModel()
+        {
+            var nodeToolBoxModel = new MoGraphLinks(GraphLinksSettingTargets.NodesToolBoxModel);
+
+            //Init data
+            NodeToolBoxModelNodesSource = new ObservableCollection<MoNodeData>();
 
             //Set model properties
             nodeToolBoxModel.HasUndoManager = false;
@@ -154,40 +161,60 @@ namespace GoWPFApplication.ViewModels
 
             //Assign model
             NodeToolBoxModel = nodeToolBoxModel;
-        }
-
-        private void InitializeLinksToolBox()
-        {
-            var linksToolBoxModel = new MoGraphLinks(GraphLinksSettingTargets.LinksToolBoxModel);
 
             //Fill data
-            LinkToolBoxModelLinksSource = new ObservableCollection<MoLinkData>();
+            GenerateNodeToolboxNodes();
+        }
 
-            for (int i = 0; i < 80; i++)
-            {
-                var newLinkData = new MoLinkData()
-                {
-                    Text = $"LT {i}",
-                    Points = new ObservableCollection<Point>() { new Point(0, 0), new Point(40, 40) } 
-                };
+        private void GenerateLinkToolboxLinks()
+        {
+            LinkToolBoxModelLinksSource?.Clear();
 
-                // Select first node in the links tool box
-                if (i == 0) newLinkData.IsSelected = true;
+            #region Workarround to get a fix for having all links stacked top left over each other withn the links toolbox
 
-                newLinkData.GenerateLinkVisual();
-                LinkToolBoxModelLinksSource.Add(newLinkData);
-            }
-
-            //Workarround to get correct non-overlapping items in the links toolbox
             var nodesSource = new ObservableCollection<MoNodeData>();
 
             var newNodedata = new MoNodeData()
             {
-                Text = $"Temp"
+                Text = $"N0"
             };
 
             nodesSource.Add(newNodedata);
-            linksToolBoxModel.NodesSource = nodesSource;
+            if (LinkToolBoxModel is not null)
+            {
+                LinkToolBoxModel.NodesSource = nodesSource;
+            }
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(2000);
+                App.Current.Dispatcher.Invoke(() => nodesSource.Clear());
+            });
+
+            #endregion
+
+            for (int i = 1; i < 11; i++)
+            {
+                var newLinkData = new MoLinkData()
+                {
+                    Text = $"L{i}",
+                    Points = new ObservableCollection<Point>() { new Point(0, 0), new Point(40, 40) }
+                };
+
+                // Select first node in the links tool box
+                if (i == 1) newLinkData.IsSelected = true;
+
+                newLinkData.GenerateLinkVisual();
+                LinkToolBoxModelLinksSource?.Add(newLinkData);
+            }
+        }
+
+        private void InitializeLinksToolboxModel()
+        {
+            var linksToolBoxModel = new MoGraphLinks(GraphLinksSettingTargets.LinksToolBoxModel);
+
+            //Init data
+            LinkToolBoxModelLinksSource = new ObservableCollection<MoLinkData>();
 
             //Set model properties
             linksToolBoxModel.HasUndoManager = false;
@@ -196,6 +223,9 @@ namespace GoWPFApplication.ViewModels
 
             //Assign model
             LinkToolBoxModel = linksToolBoxModel;
+
+            //Fill data
+            GenerateLinkToolboxLinks();
         }
 
         private void InitializeGraphLinksModel()
@@ -407,9 +437,9 @@ namespace GoWPFApplication.ViewModels
                                 linkData.BackColor = selectedToolBoxLink.BackColor;
                                 linkData.ForeColor = selectedToolBoxLink.ForeColor;
                                 linkData.FromArrow = selectedToolBoxLink.FromArrow;
-                                linkData.FromArrowSacle = selectedToolBoxLink.FromArrowSacle;
+                                linkData.FromArrowScale = selectedToolBoxLink.FromArrowScale;
                                 linkData.ToArrow = selectedToolBoxLink.ToArrow;
-                                linkData.ToArrowSacle = selectedToolBoxLink.ToArrowSacle;
+                                linkData.ToArrowScale = selectedToolBoxLink.ToArrowScale;
                                 linkData.Thickness = selectedToolBoxLink.Thickness;
                                 linkData.DashArray = selectedToolBoxLink.DashArray;
                             }
@@ -607,6 +637,42 @@ namespace GoWPFApplication.ViewModels
         }
 
         private bool CanExecuteSelectInToolBox(object? parameter)
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region GenerateToolBoxCommand
+
+        private RelayCommand<object?>? _generateToolBoxCommand;
+
+        public RelayCommand<object?>? GenerateToolBoxCommand
+        {
+            get { return _generateToolBoxCommand; }
+            private set { _generateToolBoxCommand = value; }
+        }
+
+        private void ExecuteGenerateToolBox(object? parameter)
+        {
+            if (parameter is string)
+            {
+                var option = parameter as string;
+
+                if (option == "Nodes")
+                {
+                    GenerateNodeToolboxNodes();
+                }
+
+                if (option == "Links")
+                {
+                    GenerateLinkToolboxLinks();
+                }
+            }
+
+        }
+
+        private bool CanExecuteGenerateToolBox(object? parameter)
         {
             return true;
         }

@@ -41,12 +41,12 @@ namespace GoWPFApplication.Models
 
         #region Link visual
 
-        private List<DoubleCollection?> _dashArrays;
+        private List<DoubleCollection?>? _dashArrays;
 
-        public List<DoubleCollection?> DashArrays
+        public List<DoubleCollection?>? DashArrays
         {
             get { return _dashArrays; }
-            set { if (_dashArrays != value) { List<DoubleCollection?> old = _dashArrays; _dashArrays = value; RaisePropertyChanged("DashArrays", old, value); } }
+            set { if (_dashArrays != value) { List<DoubleCollection?>? old = _dashArrays; _dashArrays = value; RaisePropertyChanged("DashArrays", old, value); } }
         }
 
         private string _backColor = "Black";
@@ -74,12 +74,12 @@ namespace GoWPFApplication.Models
             set { if (_fromArrow != value) { Arrowhead old = _fromArrow; _fromArrow = value; RaisePropertyChanged("FromArrow", old, value); } }
         }
 
-        private double _fromArrowSacle = 1;
+        private double _fromArrowScale = 1;
 
-        public double FromArrowSacle
+        public double FromArrowScale
         {
-            get { return _fromArrowSacle; }
-            set { if (_fromArrowSacle != value) { double old = _fromArrowSacle; _fromArrowSacle = value; RaisePropertyChanged("FromArrowSacle", old, value); } }
+            get { return _fromArrowScale; }
+            set { if (_fromArrowScale != value) { double old = _fromArrowScale; _fromArrowScale = value; RaisePropertyChanged("FromArrowScale", old, value); } }
         }
 
         private Arrowhead _toArrow = Arrowhead.Triangle;
@@ -90,12 +90,12 @@ namespace GoWPFApplication.Models
             set { if (_toArrow != value) { Arrowhead old = _toArrow; _toArrow = value; RaisePropertyChanged("ToArrow", old, value); } }
         }
 
-        private double _toArrowSacle = 1;
+        private double _toArrowScale = 1;
 
-        public double ToArrowSacle
+        public double ToArrowScale
         {
-            get { return _toArrowSacle; }
-            set { if (_toArrowSacle != value) { double old = _toArrowSacle; _toArrowSacle = value; RaisePropertyChanged("ToArrowSacle", old, value); } }
+            get { return _toArrowScale; }
+            set { if (_toArrowScale != value) { double old = _toArrowScale; _toArrowScale = value; RaisePropertyChanged("ToArrowScale", old, value); } }
         }
 
         private double _thickness = 1;
@@ -151,23 +151,26 @@ namespace GoWPFApplication.Models
         public void GenerateLinkVisual()
         {
             BackColor = RandomBrushString();
-            ForeColor = RandomBrushString();
+            ForeColor = Brushes.Black.ToString();
 
             FromArrow = (Arrowhead)new Random().Next(Enum.GetNames(typeof(Arrowhead)).Length);
             double minFromArrowSacle = 1;
-            double maxFromArrowSacle = 4;
-            FromArrowSacle = (new Random().NextDouble() * (maxFromArrowSacle - minFromArrowSacle) + minFromArrowSacle);
+            double maxFromArrowSacle = 2;
+            FromArrowScale = (new Random().NextDouble() * (maxFromArrowSacle - minFromArrowSacle) + minFromArrowSacle);
 
             ToArrow = (Arrowhead)new Random().Next(Enum.GetNames(typeof(Arrowhead)).Length);
             double minToArrowSacle = 1;
-            double maxToArrowSacle = 4;
-            FromArrowSacle = (new Random().NextDouble() * (maxToArrowSacle - minToArrowSacle) + minToArrowSacle);
+            double maxToArrowSacle = 2;
+            ToArrowScale = (new Random().NextDouble() * (maxToArrowSacle - minToArrowSacle) + minToArrowSacle);
 
             double minThickness = 1;
-            double maxThickness = 4;
+            double maxThickness = 3;
             Thickness = (new Random().NextDouble() * (maxThickness - minThickness) + minThickness);
 
-            DashArray = DashArrays[new Random().Next(DashArrays.Count)];
+            if (DashArrays is not null)
+            {
+                DashArray = DashArrays[new Random().Next(DashArrays.Count)];
+            }            
         }
 
         #endregion
