@@ -1,2 +1,2 @@
 # GoWPF
-Some exploration project of the mighty GoWPF library from nwoods.com
+An exploration project of the mighty GoWPF library from nwoods.com
