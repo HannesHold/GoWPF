@@ -2,6 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/.vs
 /GoWPFApplication/obj
-/.vs/GoWPFApplication/v16
-/GoWPFApplication/bin/Debug/net5.0-windows
+/GoWPFApplication/bin
